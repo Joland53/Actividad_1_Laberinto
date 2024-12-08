@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Door : MonoBehaviour
 {
@@ -14,11 +15,13 @@ public class Door : MonoBehaviour
             {
                 Debug.Log("Puerta abierta"); // Mostrar en consola que la puerta se abrió
                 Destroy(gameObject); // Destruir la puerta
+                SceneManager.LoadScene("End"); // Cargar la escena de victoria
             }
             else
             {
                 Debug.Log("Faltan llaves"); // Mostrar en consola que faltan llaves
             }
+
         }
     }
 }
