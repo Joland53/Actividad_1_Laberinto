@@ -5,6 +5,12 @@ using UnityEngine;
 public class Key : MonoBehaviour
 {
     public static int keysCollected = 0; // Variable para almacenar las llaves recolectadas
+    private UIManager uiManager; // Referencia al UIManager
+
+    void Start()
+    {
+        uiManager = FindObjectOfType<UIManager>(); // Encontrar el UIManager en la escena
+    }
 
     void OnTriggerEnter(Collider other)
     {
@@ -12,6 +18,7 @@ public class Key : MonoBehaviour
         {
             keysCollected++; // Aumentar el contador de llaves recolectadas
             Debug.Log("Llaves recolectadas: " + keysCollected); // Mostrar en consola las llaves recolectadas
+            uiManager.UpdateKeyCountText(); // Actualizar el texto en la interfaz de usuario
             Destroy(gameObject); // Destruir la llave
         }
     }

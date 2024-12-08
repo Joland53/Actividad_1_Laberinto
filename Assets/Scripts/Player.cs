@@ -12,7 +12,7 @@ public class Player : MonoBehaviour
 
     private CharacterController controller;
     private Vector3 playerVelocity;
-    private float groundCheckDistance = 0.4f; // Aumentar la distancia para verificar el suelo
+    //private float groundCheckDistance = 0.4f; // Aumentar la distancia para verificar el suelo
     private Transform groundCheck; // Transform para verificar el suelo
     private float groundCheckRadius = 0.2f; // Radio para verificar el suelo
     [SerializeField] private LayerMask groundMask; // Máscara para el suelo
