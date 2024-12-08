@@ -16,11 +16,11 @@ public class UIManager : MonoBehaviour
         int keysRemaining = keysNeeded - Key.keysCollected;
         if (keysRemaining > 0)
         {
-            keyCountText.text = "Faltan " + keysRemaining + " llaves.";
+            keyCountText.text = "Faltan " + keysRemaining + " llaves";
         }
         else
         {
-            keyCountText.text = "La puerta se puede abrir.";
+            keyCountText.text = "La puerta se puede abrir";
         }
     }
 }
