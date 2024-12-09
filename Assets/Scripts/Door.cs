@@ -15,6 +15,11 @@ public class Door : MonoBehaviour
             {
                 Debug.Log("Puerta abierta"); // Mostrar en consola que la puerta se abrió
                 Destroy(gameObject); // Destruir la puerta
+                
+                // Liberar el cursor y hacerlo visible
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+
                 SceneManager.LoadScene("End"); // Cargar la escena de victoria
             }
             else
