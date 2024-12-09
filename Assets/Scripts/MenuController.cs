@@ -5,13 +5,14 @@ using UnityEngine.SceneManagement;
 
 public class MenuController : MonoBehaviour
 {
-
+    // Método para cargar la escena de juego
     public void PlayAgain()
     {
-        SceneManager.LoadScene("Game");
+        SceneManager.LoadScene("Game"); 
 
     }
 
+    // Método para salir del juego
     public void QuitGame()
     {
         Application.Quit();

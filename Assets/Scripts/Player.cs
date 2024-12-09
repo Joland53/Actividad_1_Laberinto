@@ -1,17 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] private float speed;
-    [SerializeField] private float rotationSpeed;
-    [SerializeField] private bool isGrounded;
-    [SerializeField] private float jumpHeight;
-    private float gravity = 9.8f;
+    [SerializeField] private float speed; // Velocidad  de movimiento del jugador
+    [SerializeField] private float rotationSpeed; // Velocidad de rotación del jugador
+    [SerializeField] private bool isGrounded; // Variable para verificar si el jugador está en el suelo
+    [SerializeField] private float jumpHeight; // Altura del salto
+    private float gravity = 9.8f; // Gravedad
 
-    private CharacterController controller;
-    private Vector3 playerVelocity;
+    private CharacterController controller; // Referencia al CharacterController
+    private Vector3 playerVelocity; // Velocidad del jugador
     private Transform groundCheck; // Transform para verificar el suelo
     private float groundCheckRadius = 0.2f; // Radio para verificar el suelo
     [SerializeField] private LayerMask groundMask; // Máscara para el suelo
@@ -23,11 +24,15 @@ public class Player : MonoBehaviour
         groundCheck.SetParent(transform);
         groundCheck.localPosition = new Vector3(0, -controller.height / 2, 0);
 
-        // Ocultar el cursor
-        Cursor.visible = false;
+        // Verificar si la escena actual es la escena de juego
+        if (SceneManager.GetActiveScene().name == "Game") // Reemplaza "Game" con el nombre de tu escena de juego
+        {
+            // Ocultar el cursor
+            Cursor.visible = false;
 
-        // Bloquear el cursor en el centro de la pantalla
-        Cursor.lockState = CursorLockMode.Locked;
+            // Bloquear el cursor en el centro de la pantalla
+            Cursor.lockState = CursorLockMode.Locked;
+        }
     }
 
     void Update()

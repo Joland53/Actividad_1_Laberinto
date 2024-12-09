@@ -13,10 +13,10 @@ public class UIManager : MonoBehaviour
 
     public void UpdateKeyCountText()
     {
-        int keysRemaining = keysNeeded - Key.keysCollected;
-        if (keysRemaining > 0)
+        int keysRemaining = keysNeeded - Key.keysCollected; // Calcular la cantidad de llaves restantes
+        if (keysRemaining > 0) // Verificar si faltan llaves
         {
-            keyCountText.text = "Faltan " + keysRemaining + " llaves";
+            keyCountText.text = "Faltan " + keysRemaining + " llaves"; 
         }
         else
         {
