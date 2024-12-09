@@ -22,6 +22,12 @@ public class Player : MonoBehaviour
         groundCheck = new GameObject("GroundCheck").transform;
         groundCheck.SetParent(transform);
         groundCheck.localPosition = new Vector3(0, -controller.height / 2, 0);
+
+        // Ocultar el cursor
+        Cursor.visible = false;
+
+        // Bloquear el cursor en el centro de la pantalla
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     void Update()
@@ -71,5 +77,12 @@ public class Player : MonoBehaviour
         controller.Move(playerVelocity * Time.deltaTime);
 
         Debug.Log("Player Velocity: " + playerVelocity); // Verificar la velocidad del jugador
+
+        // Liberar el cursor y hacerlo visible si se presiona la tecla Escape
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
     }
 }
