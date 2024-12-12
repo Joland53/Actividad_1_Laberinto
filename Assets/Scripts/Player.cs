@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] private float speed; // Velocidad  de movimiento del jugador
+    [SerializeField] private float speed; // Velocidad de movimiento del jugador
     [SerializeField] private float rotationSpeed; // Velocidad de rotación del jugador
     [SerializeField] private bool isGrounded; // Variable para verificar si el jugador está en el suelo
     [SerializeField] private float jumpHeight; // Altura del salto
@@ -19,35 +19,67 @@ public class Player : MonoBehaviour
 
     void Start()
     {
-        controller = GetComponent<CharacterController>();
-        groundCheck = new GameObject("GroundCheck").transform;
-        groundCheck.SetParent(transform);
-        groundCheck.localPosition = new Vector3(0, -controller.height / 2, 0);
-
-        // Verificar si la escena actual es la escena de juego
-        if (SceneManager.GetActiveScene().name == "Game") // Reemplaza "Game" con el nombre de tu escena de juego
-        {
-            // Ocultar el cursor
-            Cursor.visible = false;
-
-            // Bloquear el cursor en el centro de la pantalla
-            Cursor.lockState = CursorLockMode.Locked;
-        }
+        InitializePlayer();
+        ConfigureCursor();
     }
 
     void Update()
     {
-        // Movimiento del jugador
+        HandleMovement();
+        HandleRotation();
+        HandleGravity();
+        HandleJump();
+        HandleCursorUnlock();
+    }
+
+    /// <summary>
+    /// Inicializa el CharacterController y el groundCheck.
+    /// </summary>
+    private void InitializePlayer()
+    {
+        controller = GetComponent<CharacterController>();
+        groundCheck = new GameObject("GroundCheck").transform;
+        groundCheck.SetParent(transform);
+        groundCheck.localPosition = new Vector3(0, -controller.height / 2, 0);
+    }
+
+    /// <summary>
+    /// Configura el cursor según la escena.
+    /// </summary>
+    private void ConfigureCursor()
+    {
+        if (SceneManager.GetActiveScene().name == "Game") // Reemplaza "Game" con el nombre de tu escena de juego
+        {
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+        }
+    }
+
+    /// <summary>
+    /// Maneja el movimiento del jugador.
+    /// </summary>
+    private void HandleMovement()
+    {
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
         Vector3 direccion = transform.right * horizontal + transform.forward * vertical;
         controller.Move(direccion * speed * Time.deltaTime);
+    }
 
-        // Rotación del jugador
+    /// <summary>
+    /// Maneja la rotación del jugador.
+    /// </summary>
+    private void HandleRotation()
+    {
         float mouseX = Input.GetAxis("Mouse X");
         transform.Rotate(Vector3.up * mouseX * rotationSpeed * Time.deltaTime);
+    }
 
-        // Gravedad
+    /// <summary>
+    /// Maneja la gravedad y la verificación del suelo.
+    /// </summary>
+    private void HandleGravity()
+    {
         isGrounded = Physics.CheckSphere(groundCheck.position, groundCheckRadius, groundMask);
         Debug.Log("isGrounded: " + isGrounded); // Verificar si está en el suelo
 
@@ -56,13 +88,22 @@ public class Player : MonoBehaviour
             playerVelocity.y = 0f;
         }
 
-        // Verificar si se presiona el botón de salto
+        playerVelocity.y -= gravity * Time.deltaTime;
+        controller.Move(playerVelocity * Time.deltaTime);
+
+        Debug.Log("Player Velocity: " + playerVelocity); // Verificar la velocidad del jugador
+    }
+
+    /// <summary>
+    /// Maneja el salto del jugador.
+    /// </summary>
+    private void HandleJump()
+    {
         if (Input.GetButtonDown("Jump"))
         {
             Debug.Log("Jump button pressed");
         }
 
-        // Salto
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
             Debug.Log("Jump pressed and isGrounded"); // Verificar si se presiona el salto
@@ -76,14 +117,13 @@ public class Player : MonoBehaviour
                 Debug.LogError("jumpHeight y gravity deben ser mayores que 0");
             }
         }
+    }
 
-        // Aplicar gravedad
-        playerVelocity.y -= gravity * Time.deltaTime;
-        controller.Move(playerVelocity * Time.deltaTime);
-
-        Debug.Log("Player Velocity: " + playerVelocity); // Verificar la velocidad del jugador
-
-        // Liberar el cursor y hacerlo visible si se presiona la tecla Escape
+    /// <summary>
+    /// Maneja la liberación del cursor cuando se presiona la tecla Escape.
+    /// </summary>
+    private void HandleCursorUnlock()
+    {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             Cursor.lockState = CursorLockMode.None;
