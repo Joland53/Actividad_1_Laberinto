@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
@@ -17,10 +19,13 @@ public class Player : MonoBehaviour
     private float groundCheckRadius = 0.2f; // Radio para verificar el suelo
     [SerializeField] private LayerMask groundMask; // Máscara para el suelo
 
+    [SerializeField] private TextMeshProUGUI pauseText; // Referencia al texto de pausa
+
     void Start()
     {
         InitializePlayer();
         ConfigureCursor();
+        pauseText.gameObject.SetActive(false);
     }
 
     void Update()
@@ -48,7 +53,7 @@ public class Player : MonoBehaviour
     /// </summary>
     private void ConfigureCursor()
     {
-        if (SceneManager.GetActiveScene().name == "Game") // Reemplaza "Game" con el nombre de tu escena de juego
+        if (SceneManager.GetActiveScene().name == "Game")
         {
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
@@ -120,14 +125,27 @@ public class Player : MonoBehaviour
     }
 
     /// <summary>
-    /// Maneja la liberación del cursor cuando se presiona la tecla Escape.
+    /// Maneja la liberación y el bloqueo del cursor cuando se presiona la tecla Escape.
+    /// También pausa y reanuda el juego.
     /// </summary>
     private void HandleCursorUnlock()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
+            if (Cursor.lockState == CursorLockMode.Locked)
+            {
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+                Time.timeScale = 0f; // Pausa el juego
+                pauseText.gameObject.SetActive(true); // Muestra el texto de pausa
+            }
+            else
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+                Time.timeScale = 1f; // Reanuda el juego
+                pauseText.gameObject.SetActive(false); // Oculta el texto de pausa
+            }
         }
     }
 }

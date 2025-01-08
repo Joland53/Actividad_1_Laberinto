@@ -43,7 +43,7 @@ public class Key : MonoBehaviour
     {
         SceneManager.sceneLoaded += (scene, mode) =>
         {
-            if (scene.name == "Game") // Reemplaza "GameScene" con el nombre de tu escena de juego
+            if (scene.name == "Game") // Verificar si la escena cargada es la de juego
             {
                 keysCollected = 0;
             }
