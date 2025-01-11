@@ -17,8 +17,13 @@ public class Bars : MonoBehaviour
 
     private void OpenBars()
     {
-        isOpen = true;
-        Debug.Log("Abriendo las rejas " + idBar);
+        if (gM.CurrentButtonID == idBar)
+        {
+            isOpen = true;
+            Debug.Log("Abriendo las rejas " + idBar);
+        }
+
+        
     }
 
     // Update is called once per frame

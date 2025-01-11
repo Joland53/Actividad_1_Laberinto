@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -19,6 +20,10 @@ public class Player : MonoBehaviour
     private float groundCheckRadius = 0.2f; // Radio para verificar el suelo
     [SerializeField] private LayerMask groundMask; // Máscara para el suelo
 
+    [SerializeField] private LayerMask buttonLayer; // Capa para los botones
+    [SerializeField] private float raycastDistance = 3f; // Distancia máxima del raycast
+    private Button currentButton; // Botón detectado actualmente
+
     [SerializeField] private TextMeshProUGUI pauseText; // Referencia al texto de pausa
 
     void Start()
@@ -35,6 +40,42 @@ public class Player : MonoBehaviour
         HandleGravity();
         HandleJump();
         HandleCursorUnlock();
+        HandleRaycast();
+        // Activar el botón al presionar "E"
+        if (currentButton != null && Input.GetKeyDown(KeyCode.E))
+        {
+            currentButton.ActivateButton(); // Llamar al método del botón
+        }
+    }
+
+    /// <summary>
+    /// Lanza un raycast desde la cámara en la dirección en la que está mirando el jugador.
+    private void HandleRaycast()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out RaycastHit hit, raycastDistance, buttonLayer))
+        {
+            if (hit.collider.TryGetComponent<Button>(out Button button))
+            {
+                currentButton = button;
+
+                // Mostrar mensaje segun el estado del botón
+                if (currentButton.IsActivated())
+                {
+                    FindObjectOfType<UIManager>().ShowMessage("Botón ya activado. La barrera está abierta ");
+                }
+                else
+                {
+                    FindObjectOfType<UIManager>().ShowMessage("Pulsa E para activar");
+                }
+                
+            }
+        }
+        else
+        {
+            currentButton = null; // No hay botón detectado
+            FindObjectOfType<UIManager>().HideMessage(); // Ocultar mensaje
+        }
     }
 
     /// <summary>

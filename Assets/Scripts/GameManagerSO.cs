@@ -6,12 +6,14 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "MiGameManagerSO")]
 public class GameManagerSO : ScriptableObject
 {
-    public event Action OnButtonPressed;
-    public void PressButtom(int idButton)
+    public int CurrentButtonID { get; internal set; } // ID del botón actual
+    public event Action OnButtonPressed; // Evento para cuando se presiona un botón
+    public void RegisterPressButton(int idButton)
     {
         //Lanzar evento de que un botón ha sido pulsado
+        CurrentButtonID = idButton;
         OnButtonPressed?.Invoke();
-        Debug.Log("Presionando el boton " + idButton);
+        Debug.Log("Presionando el boton {idButton} ");
     }
     // Start is called before the first frame update
     void Start()
