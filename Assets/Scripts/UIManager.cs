@@ -42,8 +42,8 @@ public class UIManager : MonoBehaviour
     }
     private IEnumerator ClearMessageAfterDelay()
     {
-        // Esperar 2 segundos antes de borrar el mensaje
-        yield return new WaitForSeconds(2f);
+        // Esperar 1 segundo antes de borrar el mensaje
+        yield return new WaitForSeconds(1f);
         feedbackText.text = "";
     }
 }

@@ -13,7 +13,7 @@ public class GameManagerSO : ScriptableObject
         //Lanzar evento de que un botón ha sido pulsado
         CurrentButtonID = idButton;
         OnButtonPressed?.Invoke();
-        Debug.Log("Presionando el boton {idButton} ");
+        Debug.Log("Presionando el botón {idButton} ");
     }
     // Start is called before the first frame update
     void Start()

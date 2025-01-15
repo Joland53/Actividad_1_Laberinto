@@ -41,20 +41,22 @@ public class Player : MonoBehaviour
         HandleJump();
         HandleCursorUnlock();
         HandleRaycast();
-        // Activar el botón al presionar "E"
-        if (currentButton != null && Input.GetKeyDown(KeyCode.E))
-        {
-            currentButton.ActivateButton(); // Llamar al método del botón
-        }
     }
+
+
 
     /// <summary>
     /// Lanza un raycast desde la cámara en la dirección en la que está mirando el jugador.
+    /// </summary>
     private void HandleRaycast()
     {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition); // Raycast desde la cámara
+
+        // Verificar si el raycast colisiona con un objeto de la capa de los botones
         if (Physics.Raycast(ray, out RaycastHit hit, raycastDistance, buttonLayer))
         {
+
+            // Verificar si el objeto colisionado tiene un componente Button
             if (hit.collider.TryGetComponent<Button>(out Button button))
             {
                 currentButton = button;
@@ -69,6 +71,12 @@ public class Player : MonoBehaviour
                     FindObjectOfType<UIManager>().ShowMessage("Pulsa E para activar");
                 }
                 
+            }
+
+            // Activar el botón al presionar "E"
+            if (currentButton != null && Input.GetKeyDown(KeyCode.E))
+            {
+                currentButton.ActivateButton(); // Llamar al método del botón
             }
         }
         else

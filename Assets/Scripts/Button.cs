@@ -23,8 +23,9 @@ public class Button : MonoBehaviour
             isActivated = true; // Activar el botón
             
             //Abrir los barrotes
-            gM.RegisterPressButton(idButton); // Llamar al método PressButtom del GameManagerSO
+            gM.RegisterPressButton(idButton); // Llamar al método RegisterPressButtom del GameManagerSO
             Debug.Log($"Botón {idButton} activado.");
+
         }
 
     }

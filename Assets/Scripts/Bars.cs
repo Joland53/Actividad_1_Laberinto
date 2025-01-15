@@ -33,6 +33,13 @@ public class Bars : MonoBehaviour
         {
             //Abrir las rejas hacia abajo
             transform.Translate(Vector3.down * 5 * Time.deltaTime);
+
+            //Destruir las rejas
+            if (transform.position.y < -5)
+            {
+                Destroy(gameObject);
+            }
         }
+
     }
 }
