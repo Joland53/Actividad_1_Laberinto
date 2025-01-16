@@ -7,6 +7,7 @@ public class SpikeTrap : MonoBehaviour
 {
     [SerializeField] private GameManagerSO gM;
     [SerializeField] public int idTrap;
+    private AudioSource moveSoundTrap;
 
     private bool isOpen = false;
     [SerializeField] private float moveSpeed;
@@ -15,11 +16,13 @@ public class SpikeTrap : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //gM.OnButtonPressed += ActivateTrap;
+        moveSoundTrap = GetComponent<AudioSource>();
+
         if (gM != null)
         {
             gM.OnButtonPressed += ActivateTrap;
             Debug.Log($"Trampa {idTrap} registrada para eventos de botón.");
+
         }
         else
         {
@@ -36,6 +39,10 @@ public class SpikeTrap : MonoBehaviour
         {
             isOpen = true;
             Debug.Log("Activando la trampa" + idTrap);
+            if (moveSoundTrap != null) // Asegurarse de que hay un AudioSource asignado
+            {
+                moveSoundTrap.Play(); // Reproducir el sonido de la trampa
+            }
             StartCoroutine(StopTrap());
         }
         
@@ -51,6 +58,7 @@ public class SpikeTrap : MonoBehaviour
             transform.Translate(Vector3.forward * 1 * Time.deltaTime);
             Debug.Log($"Trampa {idTrap} moviéndose.");
 
+
         }
 
     }
@@ -61,6 +69,10 @@ public class SpikeTrap : MonoBehaviour
         yield return new WaitForSeconds(moveDuration);
         isOpen = false;
         Debug.Log($"Trampa {idTrap} detenida.");
+        if (moveSoundTrap != null) 
+        {
+            moveSoundTrap.Stop();
+        }
     }
 
     private void OnTriggerEnter(Collider other)
