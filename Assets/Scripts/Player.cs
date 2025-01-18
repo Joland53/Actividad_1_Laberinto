@@ -1,10 +1,6 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
@@ -145,7 +141,6 @@ public class Player : MonoBehaviour
         playerVelocity.y -= gravity * Time.deltaTime;
         controller.Move(playerVelocity * Time.deltaTime);
 
-        Debug.Log("Player Velocity: " + playerVelocity); // Verificar la velocidad del jugador
     }
 
     /// <summary>
