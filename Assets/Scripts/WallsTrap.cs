@@ -16,6 +16,7 @@ public class WallsTrap : MonoBehaviour
     private Vector3[] initialPositions; // Arreglo para almacenar las posiciones iniciales de las secciones de muro
     private bool isTrapActive = false; // Variable para evtar que la trampa se active más de una vez
     private AudioSource fallSoundTrap; // Referencia al componente AudioSource
+    private bool playerInside = false; // Variable para verificar si el jugador está dentro del área de la trampa
 
     // Start is called before the first frame update
     void Start()
@@ -41,6 +42,16 @@ public class WallsTrap : MonoBehaviour
             
             Debug.Log($"Jugador entró en el área de la trampa {idTrap}. Notificando al GameManager.");
             gM.TriggerTrap(idTrap); // Notificar al GameManagerSO para que active la trampa
+            playerInside = true; // Indicar que el jugador está dentro del área de la trampa
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        //Verificar si el objeto que sale es el jugador y si la trampa no ha sido activada
+        if (other.CompareTag("Player"))
+        {
+            playerInside = false; // Indicar que el jugador ya no está dentro del área de la trampa
         }
     }
 
@@ -56,18 +67,21 @@ public class WallsTrap : MonoBehaviour
 
     private IEnumerator ExecuteTrap()
     {
-        for (int i = 0; i < wallsSections.Length; i++)
+        while (playerInside)
         {
-            if (fallSoundTrap != null) // Asegurarse de que hay un AudioSource asignado
+            for (int i = 0; i < wallsSections.Length; i++)
             {
-                fallSoundTrap.Play(); // Reproducir el sonido de la trampa
+                if (fallSoundTrap != null) // Asegurarse de que hay un AudioSource asignado
+                {
+                    fallSoundTrap.Play(); // Reproducir el sonido de la trampa
+                }
+                // Hacer que la sección actual caiga
+                yield return StartCoroutine(FallAndRise(wallsSections[i], initialPositions[i]));
+                yield return new WaitForSeconds(delayBetweenFalls); // Esperar antes de la siguiente caída
+
             }
-            // Hacer que la sección actual caiga
-            yield return StartCoroutine(FallAndRise(wallsSections[i], initialPositions[i]));
-            yield return new WaitForSeconds(delayBetweenFalls); // Esperar antes de la siguiente caída
 
         }
-
         isTrapActive = false; // Permitir que la trampa se reactive si es necesario
     }
 

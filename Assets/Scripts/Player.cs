@@ -7,7 +7,6 @@ public class Player : MonoBehaviour
     [SerializeField] private float speed; // Velocidad de movimiento del jugador
     [SerializeField] private float rotationSpeed; // Velocidad de rotación del jugador
     [SerializeField] private bool isGrounded; // Variable para verificar si el jugador está en el suelo
-    [SerializeField] private float jumpHeight; // Altura del salto
     private float gravity = 9.8f; // Gravedad
 
     private CharacterController controller; // Referencia al CharacterController
@@ -34,7 +33,6 @@ public class Player : MonoBehaviour
         HandleMovement();
         HandleRotation();
         HandleGravity();
-        HandleJump();
         HandleCursorUnlock();
         HandleRaycast();
     }
@@ -143,30 +141,6 @@ public class Player : MonoBehaviour
 
     }
 
-    /// <summary>
-    /// Maneja el salto del jugador.
-    /// </summary>
-    private void HandleJump()
-    {
-        if (Input.GetButtonDown("Jump"))
-        {
-            Debug.Log("Jump button pressed");
-        }
-
-        if (Input.GetButtonDown("Jump") && isGrounded)
-        {
-            Debug.Log("Jump pressed and isGrounded"); // Verificar si se presiona el salto
-            if (jumpHeight > 0 && gravity > 0)
-            {
-                playerVelocity.y = Mathf.Sqrt(jumpHeight * 2.0f * gravity);
-                Debug.Log("Jump velocity: " + playerVelocity.y); // Verificar la velocidad del salto
-            }
-            else
-            {
-                Debug.LogError("jumpHeight y gravity deben ser mayores que 0");
-            }
-        }
-    }
 
     /// <summary>
     /// Maneja la liberación y el bloqueo del cursor cuando se presiona la tecla Escape.
