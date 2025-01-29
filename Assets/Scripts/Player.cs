@@ -110,7 +110,7 @@ public class Player : MonoBehaviour
     {
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
-        Vector3 direccion = transform.right * horizontal + transform.forward * vertical;
+        Vector3 direccion = (transform.right * horizontal + transform.forward * vertical).normalized;
         controller.Move(direccion * speed * Time.deltaTime);
     }
 
